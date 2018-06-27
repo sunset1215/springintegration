@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DemoApplicationTests {
 
 	@Test
-	public void contextLoads() {
+	public void testFlow() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		DirectChannel start = (DirectChannel) context.getBean("start");
 		
@@ -23,6 +23,34 @@ public class DemoApplicationTests {
 			@Override
 			public Object getPayload() {
 				return "PayPal";
+			}
+			
+			@Override
+			public MessageHeaders getHeaders() {
+				return null;
+			}
+		};
+		
+		start.send(msg);
+		
+		msg = new Message() {
+			@Override
+			public Object getPayload() {
+				return "Hello";
+			}
+			
+			@Override
+			public MessageHeaders getHeaders() {
+				return null;
+			}
+		};
+		
+		start.send(msg);
+		
+		msg = new Message() {
+			@Override
+			public Object getPayload() {
+				return "";
 			}
 			
 			@Override
